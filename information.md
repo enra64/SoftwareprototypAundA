@@ -1,4 +1,6 @@
 # Android
+## Android supports a shit-ton of motion sensors:
+[docs](https://developer.android.com/guide/topics/sensors/sensors_motion.html)
 ## Getting rotation info
 [tutorial](http://androidcodeexamples.blogspot.de/2011/12/shake-listener-demoexample.html)
 
