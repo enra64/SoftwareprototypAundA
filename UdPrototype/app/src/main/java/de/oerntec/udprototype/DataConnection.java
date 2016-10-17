@@ -1,5 +1,7 @@
 package de.oerntec.udprototype;
 
+import android.os.AsyncTask;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,6 +12,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.nio.channels.DatagramChannel;
 
 import sp_common.DataSink;
 import sp_common.SensorData;
@@ -19,26 +22,28 @@ import sp_common.SensorData;
  */
 
 public class DataConnection implements DataSink {
-    DatagramSocket mSocket;
-    InetAddress mHost;
-    int mPort;
+    private DatagramSocket mSocket;
+    private InetAddress mHost;
+    private int mPort;
 
     /**
      * Initialize the connection using specified port
      */
-    DataConnection(String host, int port) throws UnknownHostException, SocketException {
+    DataConnection(String host, int port) throws IOException {
         // save host(translated) and port
         mPort = port;
         mHost = InetAddress.getByName(host);
 
         // create socket from host and port
-        mSocket = new DatagramSocket(port, mHost);
+        DatagramChannel channel = DatagramChannel.open();
+        mSocket = channel.socket();
     }
 
     /**
      * call before exiting
      */
-    void close(){
+    @Override
+    public void close(){
         mSocket.close();
     }
 
@@ -47,15 +52,26 @@ public class DataConnection implements DataSink {
      */
     @Override
     public void onData(SensorData sensorData) {
-        try {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            ObjectOutputStream os = new ObjectOutputStream(outputStream);
-            os.writeObject(sensorData);
-            byte[] data = outputStream.toByteArray();
-            DatagramPacket sendPacket = new DatagramPacket(data, data.length, mHost, mPort);
-            mSocket.send(sendPacket);
-        } catch (IOException e) {
-            e.printStackTrace();
+        new SensorOut().execute(sensorData);
+    }
+
+    private class SensorOut extends AsyncTask<SensorData, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(SensorData... sensorData) {
+            try {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                ObjectOutputStream os = new ObjectOutputStream(outputStream);
+                os.writeObject(sensorData[0]);
+                byte[] data = outputStream.toByteArray();
+                DatagramPacket sendPacket = new DatagramPacket(data, data.length, mHost, mPort);
+                mSocket.send(sendPacket);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
         }
     }
 }

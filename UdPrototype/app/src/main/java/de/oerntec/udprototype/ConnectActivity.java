@@ -2,13 +2,16 @@ package de.oerntec.udprototype;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
+import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-public class ConnectActivity extends AppCompatActivity {
+public class ConnectActivity extends AppCompatActivity implements View.OnClickListener {
     Accelerometer mAccelerometer;
     DataConnection mConnection = null;
 
@@ -19,8 +22,12 @@ public class ConnectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
 
+        // find our edittexts
         mHostText = (EditText) findViewById(R.id.hostText);
         mPortText = (EditText) findViewById(R.id.portText);
+
+        // listen to the start button
+        findViewById(R.id.startButton).setOnClickListener(this);
     }
 
     @Override
@@ -29,10 +36,12 @@ public class ConnectActivity extends AppCompatActivity {
         super.onPause();
 
         // unregister accelerometer listener
-        mAccelerometer.close();
+        if (mAccelerometer != null)
+            mAccelerometer.close();
 
         // close the socket
-        mConnection.close();
+        if (mConnection != null)
+            mConnection.close();
     }
 
     @Override
@@ -40,7 +49,12 @@ public class ConnectActivity extends AppCompatActivity {
         // super must be called
         super.onResume();
 
-        // try initialise the connection
+        // initialise the sensor
+        mAccelerometer = new Accelerometer(this);
+    }
+
+    private boolean createConnection() {
+        // try to initialise the connection
         try {
             mConnection = new DataConnection(
                     mHostText.getText().toString(),
@@ -49,20 +63,34 @@ public class ConnectActivity extends AppCompatActivity {
             // reset errors on edittexts
             mHostText.setError(null);
             mPortText.setError(null);
-        } catch (SocketException e){
+        } catch (SocketException e) {
             mPortText.setError("could not bind to socket");
-        } catch (UnknownHostException e){
+            e.printStackTrace();
+            return false;
+        } catch (UnknownHostException e) {
             mHostText.setError("could not connect to host");
+            e.printStackTrace();
+            return false;
+        } catch (NumberFormatException e) {
+            mPortText.setError("port is not a number");
+            e.printStackTrace();
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            mPortText.setError("could not find an available socket");
         }
 
-        // initialise the sensor
-        mAccelerometer = new Accelerometer(this);
+        return true;
     }
 
-    /**
-     * Called when the start button is pressed
-     */
-    void onStartClick(View v){
-        mAccelerometer.setDataSink(mConnection);
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.startButton:
+                // set sensor data sink if connection was successfull
+                if(createConnection())
+                    mAccelerometer.setDataSink(mConnection);
+                break;
+        }
     }
 }

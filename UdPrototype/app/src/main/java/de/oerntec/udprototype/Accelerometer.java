@@ -18,14 +18,13 @@ import sp_common.SensorType;
 
 public class Accelerometer implements DataSource, SensorEventListener {
     private SensorManager mSensorManager;
-    private Sensor mSensor;
     private DataSink mSink;
 
     Accelerometer(Context context){
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-        mSensorManager.registerListener(this, mSensor , SensorManager.SENSOR_DELAY_GAME);
+        mSensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_GAME);
     }
 
     @Override
