@@ -10,8 +10,32 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="de.oerntec.udprototype.ConnectActivity">
 
-    <TextView
+    <Button
+        android:text="Start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/button"
+        android:onClick="onStartClick" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:ems="10"
+        android:layout_above="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="59dp"
+        android:id="@+id/hostText" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:layout_above="@+id/button"
+        android:layout_alignStart="@+id/hostText"
+        android:id="@+id/portText" />
 </RelativeLayout>

@@ -1,0 +1,60 @@
+package de.oerntec.udprototype;
+
+
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+
+import sp_common.DataSink;
+import sp_common.DataSource;
+import sp_common.SensorData;
+import sp_common.SensorType;
+
+/**
+ * This class implements the DataSource interface for the accelerometer sensor
+ */
+
+public class Accelerometer implements DataSource, SensorEventListener {
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
+    private DataSink mSink;
+
+    Accelerometer(Context context){
+        mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        mSensorManager.registerListener(this, mSensor , SensorManager.SENSOR_DELAY_GAME);
+    }
+
+    @Override
+    public void setDataSink(DataSink dataSink) {
+        mSink = dataSink;
+    }
+
+    @Override
+    public void close() {
+        mSensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        // if no sink is set yet, discard of the SensorEvent
+        if(mSink == null)
+            return;
+
+        // push data into sink
+        mSink.onData(
+                new SensorData(
+                        SensorType.Accelerometer,
+                        sensorEvent.values,
+                        sensorEvent.timestamp,
+                        sensorEvent.accuracy));
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+    }
+}
