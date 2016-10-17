@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SoftwareprototypAundA:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SoftwareprototypAundA_jar</output-path>
+    <root id="archive" name="SoftwareprototypAundA.jar">
+      <element id="module-output" name="SoftwareprototypAundA" />
+    </root>
+  </artifact>
+</component>
