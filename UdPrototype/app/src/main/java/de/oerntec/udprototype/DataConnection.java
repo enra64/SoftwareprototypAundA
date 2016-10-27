@@ -2,32 +2,40 @@ package de.oerntec.udprototype;
 
 import android.os.AsyncTask;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.nio.channels.DatagramChannel;
 
 import sp_common.DataSink;
 import sp_common.SensorData;
 
 /**
- * Created by arne on 10/17/16.
+ * The DataConnection class is an UDP implementation of the DataSink interface; it sends all input
+ * data to the host and port given in the constructor
  */
 
-public class DataConnection implements DataSink {
+class DataConnection implements DataSink {
+    /**
+     * The socket we use for sending data; initialized in the constructor
+     */
     private DatagramSocket mSocket;
-    private InetAddress mHost;
-    private int mPort;
 
     /**
-     * Initialize the connection using specified port
+     * The target host for our UDP packets
+     */
+    private InetAddress mHost;
+
+    /**
+     * The target port on {@link #mHost} for our UDP packets
+     */
+    private final int mPort;
+
+    /**
+     * Initialize the connection using specified port and host
      */
     DataConnection(String host, int port) throws IOException {
         // save host(translated) and port
@@ -43,7 +51,7 @@ public class DataConnection implements DataSink {
      * call before exiting
      */
     @Override
-    public void close(){
+    public void close() {
         mSocket.close();
     }
 
@@ -55,6 +63,10 @@ public class DataConnection implements DataSink {
         new SensorOut().execute(sensorData);
     }
 
+
+    /**
+     * Class to encapsulate sending SensorData objects asynchronously
+     */
     private class SensorOut extends AsyncTask<SensorData, Void, Boolean> {
 
         @Override

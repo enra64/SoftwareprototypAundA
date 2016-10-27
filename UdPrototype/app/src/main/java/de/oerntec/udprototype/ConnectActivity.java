@@ -2,8 +2,6 @@ package de.oerntec.udprototype;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
@@ -60,7 +58,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
                     mHostText.getText().toString(),
                     Integer.valueOf(mPortText.getText().toString()));
 
-            // reset errors on edittexts
+            // reset errors on EditTexts
             mHostText.setError(null);
             mPortText.setError(null);
         } catch (SocketException e) {
@@ -87,7 +85,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.startButton:
-                // set sensor data sink if connection was successfull
+                // set sensor data sink if connection was successful
                 if(createConnection())
                     mAccelerometer.setDataSink(mConnection);
                 break;
