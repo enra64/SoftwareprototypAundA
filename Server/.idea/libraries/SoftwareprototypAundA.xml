@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SoftwareprototypAundA">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../common/out/artifacts/SoftwareprototypAundA_jar/SoftwareprototypAundA.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
