@@ -5,7 +5,7 @@ import sp_common.*;
 
 public class Server {
     public static void main(String args[]) throws Exception {
-        DatagramSocket serverSocket = new DatagramSocket(9876);
+        DatagramSocket serverSocket = new DatagramSocket(25456);
         byte[] appData = new byte[1024];
         System.out.println("running");
         while (true) {

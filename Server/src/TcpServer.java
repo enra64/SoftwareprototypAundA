@@ -1,12 +1,9 @@
 import sp_common.SensorData;
 
 import java.io.*;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,20 +13,20 @@ import java.util.Scanner;
 public class TcpServer {
     public static void main(String args[]) {
         ServerThread server = new ServerThread();
-        server.run();
+        server.start();
 
         Scanner killScanner = new Scanner(System.in);
         killScanner.nextLine();
 
-        server.stop();
+        server.gracefulStop();
     }
 
-    private static class ServerThread implements Runnable {
+    private static class ServerThread extends Thread {
         private List<SensorData> mSensorDataHistory = new ArrayList<>();
         private List<Long> mSensorDataReceiptTimestamps = new ArrayList<>();
         private boolean mRunning = true;
 
-        void stop(){
+        void gracefulStop(){
             // kill the running server
             mRunning = false;
         }
@@ -55,7 +52,7 @@ public class TcpServer {
         public void run() {
             try {
                 // listen for tcp connections
-                ServerSocket listenerSocket = new ServerSocket(6789);
+                ServerSocket listenerSocket = new ServerSocket(25456);
 
                 // accept incoming connections
                 Socket connection = listenerSocket.accept();
