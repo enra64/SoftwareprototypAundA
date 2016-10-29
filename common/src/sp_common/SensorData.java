@@ -3,6 +3,7 @@ package sp_common;
 import sun.management.Sensor;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * This class encapsulates all data for a single sensor event
@@ -16,6 +17,12 @@ public class SensorData implements Serializable {
     }
 
     public SensorData() {
+    }
+
+    @Override
+    public String toString() {
+        // print the data as csv
+        return Arrays.toString(data).replaceAll("[ \\[\\]]", "") + "," + timestamp + "," + accuracy;
     }
 
     public SensorType sensorType;
