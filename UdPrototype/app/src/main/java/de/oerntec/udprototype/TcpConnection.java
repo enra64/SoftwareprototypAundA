@@ -9,6 +9,8 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.channels.DatagramChannel;
+import java.util.ArrayDeque;
+import java.util.Queue;
 
 import sp_common.DataSink;
 import sp_common.SensorData;
@@ -29,6 +31,7 @@ class TcpConnection implements DataSink {
      */
     TcpConnection(String host, int port) throws IOException{
         mSocketThread = new TcpThread(host, port);
+        mSocketThread.start();
     }
 
     /**
@@ -47,7 +50,7 @@ class TcpConnection implements DataSink {
         mSocketThread.send(sensorData);
     }
 
-    private class TcpThread implements Runnable {
+    private class TcpThread extends Thread {
         /**
          * The socket we use for sending data; initialized in the constructor
          */
@@ -64,37 +67,44 @@ class TcpConnection implements DataSink {
         private final int mPort;
 
         /**
+         * A queue of messages that still have to be sent
+         */
+        private Queue<SensorData> mDataQueue = new ArrayDeque<>();
+
+        /**
          * Initialize the connection using specified port and host
          */
         TcpThread(String host, int port) throws IOException {
             // save host(translated) and port
             mHost = InetAddress.getByName(host);
             mPort = port;
-
-            // create socket from host and port
-            mSocket = new Socket(mHost, mPort);
         }
 
         @Override
         public void run() {
+            ObjectOutputStream objectOutputStream = null;
             try {
-                wait();
-            } catch (InterruptedException e) {
+                // create socket from host and port
+                mSocket = new Socket(mHost, mPort);
+
+                // get an object output stream
+                objectOutputStream = new ObjectOutputStream(mSocket.getOutputStream());
+
+                // send every object we get
+                while(true) {
+                    if (!mDataQueue.isEmpty())
+                        objectOutputStream.writeObject(mDataQueue.remove());
+                }
+
+            } catch (IOException e) {
                 e.printStackTrace();
             }
+
+
         }
 
         void send(SensorData data){
-            try {
-                notify();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                ObjectOutputStream os = new ObjectOutputStream(mSocket.getOutputStream());
-                os.writeObject(data);
-                wait();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
-            }
-
+            mDataQueue.add(data);
         }
     }
 }
