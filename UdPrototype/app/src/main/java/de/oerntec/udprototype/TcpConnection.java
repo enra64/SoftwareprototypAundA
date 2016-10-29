@@ -10,6 +10,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.channels.DatagramChannel;
 import java.util.ArrayDeque;
+import java.util.Date;
 import java.util.Queue;
 
 import sp_common.DataSink;
@@ -41,12 +42,16 @@ class TcpConnection implements DataSink {
     public void close() {
 
     }
-
+boolean startSent = false;
     /**
      * Push new data to the remote partner
      */
     @Override
     public void onData(SensorData sensorData) {
+        if(!startSent){
+            System.out.println("system:" + new Date().getTime() * 1000000 + ", sensor: " + sensorData.timestamp);
+            startSent = true;
+        }
         mSocketThread.send(sensorData);
     }
 
