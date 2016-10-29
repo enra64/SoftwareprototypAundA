@@ -38,4 +38,15 @@
         android:layout_alignStart="@+id/hostText"
         android:id="@+id/portText"
         android:text="25456" />
+
+    <ToggleButton
+        android:text="ToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/hostText"
+        android:layout_alignStart="@+id/startButton"
+        android:id="@+id/udpToggle"
+        android:textOn="UDP"
+        android:textOff="TCP"
+        android:checked="false" />
 </RelativeLayout>
