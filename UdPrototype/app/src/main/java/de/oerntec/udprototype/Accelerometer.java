@@ -15,9 +15,15 @@ import sp_common.SensorType;
 /**
  * This class implements the DataSource interface for the accelerometer sensor
  */
+class Accelerometer implements DataSource, SensorEventListener {
+    /**
+     * The android sensor manager used to connect to the accelerometer
+     */
+    private final SensorManager mSensorManager;
 
-public class Accelerometer implements DataSource, SensorEventListener {
-    private SensorManager mSensorManager;
+    /**
+     * The sink data should be pushed into
+     */
     private DataSink mSink;
 
     Accelerometer(Context context){
@@ -39,7 +45,7 @@ public class Accelerometer implements DataSource, SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        // if no sink is set yet, discard of the SensorEvent
+        // if no sink is set yet, discard the SensorEvent
         if(mSink == null)
             return;
 
