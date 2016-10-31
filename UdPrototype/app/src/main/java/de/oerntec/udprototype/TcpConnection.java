@@ -99,7 +99,7 @@ class TcpConnection implements DataSink {
                 while(true) {
                     if (!mDataQueue.isEmpty())
                         // write unshared to ensure new objects are written to the stream
-                        objectOutputStream.writeUnshared(mDataQueue.poll().clone());
+                        objectOutputStream.writeUnshared(mDataQueue.poll());
                 }
             } catch (IOException e) {
                 e.printStackTrace();

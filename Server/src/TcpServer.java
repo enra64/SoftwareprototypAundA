@@ -99,10 +99,14 @@ public class TcpServer {
                 // read objects on the same connection until shutdown() is called
                 while (mRunning) {
                     // store SensorData object and receipt timestamp [ns]
-                    mSensorDataHistory.add((SensorData) oinput.readUnshared());
-                    mSensorDataReceiptTimestamps.add(new Date().getTime() * 1000000);
+                    SensorData s = (SensorData) oinput.readUnshared();
 
-                    System.out.println(Arrays.toString(mSensorDataHistory.get(mSensorDataHistory.size() - 1).data));
+                    if(s != null){
+                        mSensorDataHistory.add(s.clone());
+                        mSensorDataReceiptTimestamps.add(new Date().getTime() * 1000000);
+
+                        System.out.println(Arrays.toString(s.data));
+                    }
                 }
 
                 // save history for analysis
