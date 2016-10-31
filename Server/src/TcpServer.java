@@ -3,43 +3,71 @@ import sp_common.SensorData;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * TCP prototype server implementation
  */
 public class TcpServer {
+
+    /**
+     * Program entry point: starts a new server that may be stopped by entering any character in terminal
+     */
     public static void main(String args[]) {
+        // start server; async
         ServerThread server = new ServerThread();
         server.start();
 
+        // when the user inputs data, this will be skipped, and we go to shutdown
         Scanner killScanner = new Scanner(System.in);
         killScanner.nextLine();
 
-        server.gracefulStop();
+        // gracefully shutdown server
+        server.shutdown();
     }
 
-    private static class ServerThread extends Thread {
+    /**
+     * The ServerThread class is the actual workhorse of the TcpServer class;
+     */
+    static class ServerThread extends Thread {
+        interface OnUpdateListener {
+            void onUpdate(SensorData sensorData);
+        }
+
+        /**
+         * A list of all received SensorData elements; the indices correspond directly to the receipt timestamps stored
+         * in mSensorDataReceiptTimestamps
+         */
         private List<SensorData> mSensorDataHistory = new ArrayList<>();
+
+        /**
+         * A list of SensorData receipt timestamps [ns]; the indices correspond directly to the SensorData elements of
+         * mSensorDataHistory
+         */
         private List<Long> mSensorDataReceiptTimestamps = new ArrayList<>();
+
+        /**
+         * true if the server should continue running
+         */
         private boolean mRunning = true;
 
-        void gracefulStop(){
+        /**
+         * Gracefully stop the server asap
+         */
+        void shutdown() {
             // kill the running server
             mRunning = false;
         }
 
-        private void save(){
-            // write out all sensor data history
-            try(FileWriter fw = new FileWriter("weighthistory.csv", true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                PrintWriter out = new PrintWriter(bw))
-            {
-                // print all history we collected
-                for(int i = 0; i < mSensorDataHistory.size(); i++){
+        /**
+         * Save all SensorData objects and their corresponding server receipt timestamps
+         */
+        private void save() {
+            try (FileWriter fw = new FileWriter("statistics.csv", true);
+                 BufferedWriter bw = new BufferedWriter(fw);
+                 PrintWriter out = new PrintWriter(bw)) {
+                // iterate over all history
+                for (int i = 0; i < mSensorDataHistory.size(); i++) {
                     out.print(mSensorDataHistory.get(i) + ",");
                     out.println(mSensorDataReceiptTimestamps.get(i));
                 }
@@ -49,6 +77,9 @@ public class TcpServer {
             }
         }
 
+        /**
+         * Listen on socket;
+         */
         @Override
         public void run() {
             try {
@@ -58,22 +89,23 @@ public class TcpServer {
                 // accept incoming connections
                 Socket connection = listenerSocket.accept();
 
+                // notify user of working state
                 System.out.println("connection on port " + listenerSocket.getLocalPort());
 
-                // get an object input stream
+                // get an object input stream; this is open as long as connection is open,
+                // so the tcp connection stays open as long as Data is transmitted
                 ObjectInputStream oinput = new ObjectInputStream(connection.getInputStream());
 
-                // read objects on the same connection until stop() is called
+                // read objects on the same connection until shutdown() is called
                 while (mRunning) {
-
-                    // store the acquired sonsordata in the history lists
-                    mSensorDataHistory.add((SensorData) oinput.readObject());
-
-                    // save timestamp, too
+                    // store SensorData object and receipt timestamp [ns]
+                    mSensorDataHistory.add((SensorData) oinput.readUnshared());
                     mSensorDataReceiptTimestamps.add(new Date().getTime() * 1000000);
+
+                    System.out.println(Arrays.toString(mSensorDataHistory.get(mSensorDataHistory.size() - 1).data));
                 }
 
-                // save captured data
+                // save history for analysis
                 save();
             } catch (Exception e) {
                 e.printStackTrace();

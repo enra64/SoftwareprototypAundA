@@ -1,14 +1,9 @@
 package de.oerntec.udprototype;
 
-import android.os.AsyncTask;
-import android.util.Log;
-
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.nio.channels.DatagramChannel;
 import java.util.ArrayDeque;
 import java.util.Date;
 import java.util.Queue;
@@ -25,7 +20,12 @@ class TcpConnection implements DataSink {
     /**
      * the thread used for communicating via tcp
      */
-    TcpThread mSocketThread;
+    private TcpThread mSocketThread;
+
+    /**
+     * Variable denoting whether we already have written out our initial sensor/system timestamp pair
+     */
+    private boolean mInitializationSent = false;
 
     /**
      * Initialize the connection using specified port and host
@@ -42,15 +42,15 @@ class TcpConnection implements DataSink {
     public void close() {
 
     }
-boolean startSent = false;
+
     /**
      * Push new data to the remote partner
      */
     @Override
     public void onData(SensorData sensorData) {
-        if(!startSent){
+        if(!mInitializationSent){
             System.out.println("system:" + new Date().getTime() * 1000000 + ", sensor: " + sensorData.timestamp);
-            startSent = true;
+            mInitializationSent = true;
         }
         mSocketThread.send(sensorData);
     }
@@ -98,14 +98,12 @@ boolean startSent = false;
                 // send every object we get
                 while(true) {
                     if (!mDataQueue.isEmpty())
-                        objectOutputStream.writeObject(mDataQueue.remove());
+                        // write unshared to ensure new objects are written to the stream
+                        objectOutputStream.writeUnshared(mDataQueue.poll().clone());
                 }
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
         }
 
         void send(SensorData data){

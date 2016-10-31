@@ -26,7 +26,7 @@ public class SensorData implements Serializable, Cloneable {
     }
 
     @Override
-    protected SensorData clone() throws CloneNotSupportedException {
+    public SensorData clone() throws CloneNotSupportedException {
         // have to do it this way to ensure proper initialization
         SensorData cloned = (SensorData) super.clone();
         cloned.sensorType = sensorType;
