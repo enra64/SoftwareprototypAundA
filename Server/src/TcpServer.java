@@ -11,11 +11,32 @@ import java.util.*;
 public class TcpServer {
 
     /**
-     * Program entry point: starts a new server that may be stopped by entering any character in terminal
+     * Program entry point: starts a new server that may be stopped by entering any character in terminal. The server
+     * will collect some statistics (mostly timestamps) and save them to statistics.csv after stopping.
      */
     public static void main(String args[]) {
-        // start server; async
-        ServerThread server = new ServerThread();
+        /*
+         * A list of all received SensorData elements; the indices correspond directly to the receipt timestamps stored
+         * in sensorDataReceiptTimestamps
+         */
+        final List<SensorData> sensorDataHistory = new ArrayList<>();
+
+        /*
+          A list of SensorData receipt timestamps [ns]; the indices correspond directly to the SensorData elements of
+          sensorDataHistory
+         */
+        final List<Long> sensorDataReceiptTimestamps = new ArrayList<>();
+
+        // create the server; the listener should insert into the lists declared above
+        ServerThread server = new ServerThread(new ServerThread.OnUpdateListener() {
+            @Override
+            public void onUpdate(SensorData sensorData) {
+                sensorDataHistory.add(sensorData);
+                sensorDataReceiptTimestamps.add(new Date().getTime() * 1000000);
+            }
+        });
+
+        // start the server
         server.start();
 
         // when the user inputs data, this will be skipped, and we go to shutdown
@@ -24,27 +45,51 @@ public class TcpServer {
 
         // gracefully shutdown server
         server.shutdown();
+
+        // save gathered results
+        save(sensorDataHistory, sensorDataReceiptTimestamps);
+    }
+
+    /**
+     * Save all SensorData objects and their corresponding server receipt timestamps
+     */
+    private static void save(List<SensorData> sensorDataHistory, List<Long> timestampHistory) {
+        // both must have the same size, as their indices must directly correspond
+        assert(sensorDataHistory.size() == timestampHistory.size());
+
+        try (FileWriter fw = new FileWriter("statistics.csv", true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            // iterate over all history
+            for (int i = 0; i < sensorDataHistory.size(); i++) {
+                out.print(sensorDataHistory.get(i) + ",");
+                out.println(timestampHistory.get(i));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
     }
 
     /**
      * The ServerThread class is the actual workhorse of the TcpServer class;
      */
     static class ServerThread extends Thread {
+        /**
+         * Interface for ServerThread update listeners
+         */
         interface OnUpdateListener {
+
+            /**
+             * Called whenever the server has received a new SensorData object
+             */
             void onUpdate(SensorData sensorData);
         }
 
         /**
-         * A list of all received SensorData elements; the indices correspond directly to the receipt timestamps stored
-         * in mSensorDataReceiptTimestamps
+         * Our listener; called whenever a new SensorData object is received
          */
-        private List<SensorData> mSensorDataHistory = new ArrayList<>();
-
-        /**
-         * A list of SensorData receipt timestamps [ns]; the indices correspond directly to the SensorData elements of
-         * mSensorDataHistory
-         */
-        private List<Long> mSensorDataReceiptTimestamps = new ArrayList<>();
+        OnUpdateListener mListener;
 
         /**
          * true if the server should continue running
@@ -52,29 +97,19 @@ public class TcpServer {
         private boolean mRunning = true;
 
         /**
+         * Create a new ServerThread with an OnUpdateListener that will be called whenever a new object arrived
+         * @param listener
+         */
+        ServerThread (OnUpdateListener listener){
+            mListener = listener;
+        }
+
+        /**
          * Gracefully stop the server asap
          */
         void shutdown() {
             // kill the running server
             mRunning = false;
-        }
-
-        /**
-         * Save all SensorData objects and their corresponding server receipt timestamps
-         */
-        private void save() {
-            try (FileWriter fw = new FileWriter("statistics.csv", true);
-                 BufferedWriter bw = new BufferedWriter(fw);
-                 PrintWriter out = new PrintWriter(bw)) {
-                // iterate over all history
-                for (int i = 0; i < mSensorDataHistory.size(); i++) {
-                    out.print(mSensorDataHistory.get(i) + ",");
-                    out.println(mSensorDataReceiptTimestamps.get(i));
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.exit(0);
-            }
         }
 
         /**
@@ -103,13 +138,8 @@ public class TcpServer {
 
                 // read objects on the same connection until shutdown() is called
                 while (mRunning) {
-                    // store SensorData object and receipt timestamp [ns]
-                    SensorData s = (SensorData) oinput.readUnshared();
-
-                    if(s != null){
-                        mSensorDataHistory.add(s);
-                        mSensorDataReceiptTimestamps.add(new Date().getTime() * 1000000);
-                    }
+                    // call listener with new object
+                    mListener.onUpdate((SensorData) oinput.readUnshared());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -133,9 +163,6 @@ public class TcpServer {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                // save history for analysis
-                save();
             }
         }
     }
