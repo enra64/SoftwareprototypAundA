@@ -33,11 +33,12 @@ public class SensorData implements Serializable, Cloneable {
      */
     @Override
     public SensorData clone() {
-        // have to do it this way to ensure proper initialization
+        // declare result
         SensorData cloned = null;
 
-        // try { clone() } to avoid throws in signature
+        // try { clone() } to avoid "throws" in signature
         try {
+            // have to call super.clone() ensure proper initialization
             cloned = (SensorData) super.clone();
             cloned.sensorType = sensorType;
             cloned.data = data.clone();
