@@ -103,11 +103,20 @@ class TcpConnection implements DataSink {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                // close the output stream after finishing running
+                try {
+                    if(objectOutputStream != null)
+                        objectOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
         void send(SensorData data){
-            mDataQueue.add(data);
+            // use clone() to correctly copy its float[] member
+            mDataQueue.add(data.clone());
         }
     }
 }

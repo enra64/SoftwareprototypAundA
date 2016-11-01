@@ -82,19 +82,24 @@ public class TcpServer {
          */
         @Override
         public void run() {
+            // declare objects that will need to be closed
+            ServerSocket listenerSocket = null;
+            Socket connection = null;
+            ObjectInputStream oinput = null;
+
             try {
                 // listen for tcp connections
-                ServerSocket listenerSocket = new ServerSocket(25456);
+                listenerSocket = new ServerSocket(25456);
 
                 // accept incoming connections
-                Socket connection = listenerSocket.accept();
+                connection = listenerSocket.accept();
 
                 // notify user of working state
                 System.out.println("connection on port " + listenerSocket.getLocalPort());
 
                 // get an object input stream; this is open as long as connection is open,
                 // so the tcp connection stays open as long as Data is transmitted
-                ObjectInputStream oinput = new ObjectInputStream(connection.getInputStream());
+                oinput = new ObjectInputStream(connection.getInputStream());
 
                 // read objects on the same connection until shutdown() is called
                 while (mRunning) {
@@ -102,18 +107,35 @@ public class TcpServer {
                     SensorData s = (SensorData) oinput.readUnshared();
 
                     if(s != null){
-                        mSensorDataHistory.add(s.clone());
+                        mSensorDataHistory.add(s);
                         mSensorDataReceiptTimestamps.add(new Date().getTime() * 1000000);
-
-                        System.out.println(Arrays.toString(s.data));
                     }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                // close all
+                try {
+                    if(oinput != null)
+                        oinput.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if(connection != null)
+                        connection.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if(listenerSocket != null)
+                        listenerSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
                 // save history for analysis
                 save();
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.exit(0);
             }
         }
     }
