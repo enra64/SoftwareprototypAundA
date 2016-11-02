@@ -1,25 +1,54 @@
 package sp_common;
 
-import sun.management.Sensor;
-
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * This class encapsulates all data for a single sensor event
  */
-public class SensorData implements Serializable {
+@SuppressWarnings("WeakerAccess")
+public class SensorData implements Serializable, Cloneable {
+    public SensorType sensorType;
+    public float[] data;
+    public long timestamp;
+    public int accuracy;
+
     public SensorData(SensorType sensorType, float[] data, long timestamp, int accuracy) {
         this.sensorType = sensorType;
         this.data = data;
         this.timestamp = timestamp;
         this.accuracy = accuracy;
     }
-
     public SensorData() {
     }
 
-    public SensorType sensorType;
-    public float[] data;
-    public long timestamp;
-    public int accuracy;
+    @Override
+    public String toString() {
+        // print the data as csv
+        return Arrays.toString(data).replaceAll("[ \\[\\]]", "") + "," + timestamp + "," + accuracy;
+    }
+
+    /**
+     * Returns a properly cloned SensorData object
+     */
+    @Override
+    public SensorData clone() {
+        // declare result
+        SensorData cloned = null;
+
+        // try { clone() } to avoid "throws" in signature
+        try {
+            // have to call super.clone() ensure proper initialization
+            cloned = (SensorData) super.clone();
+            cloned.sensorType = sensorType;
+            cloned.data = data.clone();
+            cloned.timestamp = timestamp;
+            cloned.accuracy = accuracy;
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        // this cannot be reached, as we inherit directly from Object
+        return cloned;
+    }
 }
