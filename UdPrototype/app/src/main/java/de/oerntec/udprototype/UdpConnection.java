@@ -9,6 +9,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.nio.channels.DatagramChannel;
+import java.util.Date;
 
 import sp_common.DataSink;
 import sp_common.SensorData;
@@ -72,6 +73,8 @@ class UdpConnection implements DataSink {
         @Override
         protected Boolean doInBackground(SensorData... sensorData) {
             try {
+                sensorData[0].timestamp = (new Date()).getTime()
+                        + (sensorData[0].timestamp - System.nanoTime()) / 1000000L;
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 ObjectOutputStream os = new ObjectOutputStream(outputStream);
                 os.writeObject(sensorData[0]);

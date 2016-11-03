@@ -99,9 +99,13 @@ class TcpConnection implements DataSink {
 
                 // send every object we get
                 while(true) {
-                    if (!mDataQueue.isEmpty())
+                    if (!mDataQueue.isEmpty()){
+                        SensorData data = mDataQueue.poll();
+                        data.timestamp = (new Date()).getTime()
+                                + (data.timestamp - System.nanoTime()) / 1000000L;
                         // write unshared to ensure new objects are written to the stream
-                        objectOutputStream.writeUnshared(mDataQueue.poll());
+                        objectOutputStream.writeUnshared(data);
+                    }
                     if(mDataQueue.size() > 50)
                         Log.w("TcpConnection", "long queue!: " + mDataQueue.size());
                 }
