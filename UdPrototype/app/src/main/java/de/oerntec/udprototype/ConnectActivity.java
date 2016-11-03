@@ -3,15 +3,20 @@ package de.oerntec.udprototype;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ToggleButton;
 
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import sp_common.DataSink;
+
 public class ConnectActivity extends AppCompatActivity implements View.OnClickListener {
     Accelerometer mAccelerometer;
-    DataConnection mConnection = null;
+    DataSink mDataSink = null;
+    ToggleButton mUdpToggle;
 
     EditText mPortText, mHostText;
 
@@ -26,6 +31,9 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
 
         // listen to the start button
         findViewById(R.id.startButton).setOnClickListener(this);
+
+        // find the udp toggle
+        mUdpToggle = (ToggleButton) findViewById(R.id.udpToggle);
     }
 
     @Override
@@ -38,8 +46,8 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
             mAccelerometer.close();
 
         // close the socket
-        if (mConnection != null)
-            mConnection.close();
+        if (mDataSink != null)
+            mDataSink.close();
     }
 
     @Override
@@ -54,9 +62,13 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
     private boolean createConnection() {
         // try to initialise the connection
         try {
-            mConnection = new DataConnection(
-                    mHostText.getText().toString(),
-                    Integer.valueOf(mPortText.getText().toString()));
+            // udp
+            if(mUdpToggle.isChecked())
+                mDataSink = new UdpConnection(mHostText.getText().toString(), Integer.valueOf(mPortText.getText().toString()));
+            // tdp
+            else
+                mDataSink = new TcpConnection(mHostText.getText().toString(), Integer.valueOf(mPortText.getText().toString()));
+
 
             // reset errors on EditTexts
             mHostText.setError(null);
@@ -76,6 +88,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
         } catch (IOException e) {
             e.printStackTrace();
             mPortText.setError("could not find an available socket");
+            return false;
         }
 
         return true;
@@ -87,7 +100,7 @@ public class ConnectActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.startButton:
                 // set sensor data sink if connection was successful
                 if(createConnection())
-                    mAccelerometer.setDataSink(mConnection);
+                    mAccelerometer.setDataSink(mDataSink);
                 break;
         }
     }

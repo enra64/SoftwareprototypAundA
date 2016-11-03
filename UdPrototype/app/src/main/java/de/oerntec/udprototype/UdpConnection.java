@@ -14,11 +14,11 @@ import sp_common.DataSink;
 import sp_common.SensorData;
 
 /**
- * The DataConnection class is an UDP implementation of the DataSink interface; it sends all input
+ * The UdpConnection class is an UDP implementation of the DataSink interface; it sends all input
  * data to the host and port given in the constructor
  */
 
-class DataConnection implements DataSink {
+class UdpConnection implements DataSink {
     /**
      * The socket we use for sending data; initialized in the constructor
      */
@@ -37,7 +37,7 @@ class DataConnection implements DataSink {
     /**
      * Initialize the connection using specified port and host
      */
-    DataConnection(String host, int port) throws IOException {
+    UdpConnection(String host, int port) throws IOException {
         // save host(translated) and port
         mPort = port;
         mHost = InetAddress.getByName(host);
