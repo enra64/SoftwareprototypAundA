@@ -9,7 +9,12 @@ public class Server {
     public static Logger logger;
 
 	public static void main(String args[]) throws Exception {
-		DatagramSocket serverSocket = new DatagramSocket();
+
+
+
+
+		
+		DatagramSocket serverSocket = new DatagramSocket(null);
 		serverSocket.setReuseAddress(true);
 		serverSocket.bind(new InetSocketAddress(12345));
 
