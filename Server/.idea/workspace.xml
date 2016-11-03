@@ -2,34 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="beaf08f4-a2d2-4b11-bb58-31b8eaf23c4f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/TCP_analysis.ods" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../jitter_TCP_bidirectional.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../latency_TCP_bidirectional.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../common/.gitignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/MouseControl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../UdPrototype/app/src/main/java/de/oerntec/udprototype/TcpConnection.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/TcpServer.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../UdPrototype/.idea/vcs.xml" />
-      <change type="DELETED" beforePath="C:\Users\André\Desktop\SoftwareprototypAundA\UdPrototype\.idea\gradle.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\André\Desktop\SoftwareprototypAundA\common\.idea\workspace.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\André\Desktop\SoftwareprototypAundA\common\out\artifacts\SoftwareprototypAundA_jar\SoftwareprototypAundA.jar" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\André\Desktop\SoftwareprototypAundA\common\out\production\SoftwareprototypAundA\sp_common\DataSink.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\André\Desktop\SoftwareprototypAundA\common\out\production\SoftwareprototypAundA\sp_common\DataSource.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\André\Desktop\SoftwareprototypAundA\common\out\production\SoftwareprototypAundA\sp_common\SensorData.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\André\Desktop\SoftwareprototypAundA\common\out\production\SoftwareprototypAundA\sp_common\SensorType.class" afterPath="" />
-      <change type="MOVED" beforePath="C:\Users\André\Desktop\SoftwareprototypAundA\UdPrototype\app\src\main\java\de\oerntec\udprototype\DataConnection.java" afterPath="$PROJECT_DIR$/../UdPrototype/app/src/main/java/de/oerntec/udprototype/UdpConnection.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/Server.class" afterPath="$PROJECT_DIR$/out/Server.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../UdPrototype/app/libs/SoftwareprototypAundA.jar" afterPath="$PROJECT_DIR$/../UdPrototype/app/libs/SoftwareprototypAundA.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../UdPrototype/.gitignore" afterPath="$PROJECT_DIR$/../UdPrototype/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../UdPrototype/app/src/main/java/de/oerntec/udprototype/ConnectActivity.java" afterPath="$PROJECT_DIR$/../UdPrototype/app/src/main/java/de/oerntec/udprototype/ConnectActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../common/src/sp_common/SensorData.java" afterPath="$PROJECT_DIR$/../common/src/sp_common/SensorData.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Server.java" afterPath="$PROJECT_DIR$/src/Server.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/SoftwareprototypAundA.xml" afterPath="$PROJECT_DIR$/.idea/libraries/SoftwareprototypAundA.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../UdPrototype/app/src/main/res/layout/activity_connect.xml" afterPath="$PROJECT_DIR$/../UdPrototype/app/src/main/res/layout/activity_connect.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../UdPrototype/.idea/modules.xml" afterPath="$PROJECT_DIR$/../UdPrototype/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Server.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -53,8 +27,8 @@
       <file leaf-file-name="Server.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.32586208">
-              <caret line="30" column="40" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.3761062">
+              <caret line="16" column="61" selection-start-line="16" selection-start-column="61" selection-end-line="16" selection-end-column="61" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -123,10 +97,10 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
+    <option name="x" value="-11" />
+    <option name="y" value="64" />
+    <option name="width" value="1327" />
+    <option name="height" value="735" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -438,32 +412,32 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <frame x="-11" y="64" width="1327" height="735" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928678" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19009584" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15373352" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16018307" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39910978" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928678" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3101777" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39910978" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -600,8 +574,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Server.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32586208">
-          <caret line="30" column="40" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
+        <state vertical-scroll-proportion="0.3761062">
+          <caret line="16" column="61" selection-start-line="16" selection-start-column="61" selection-end-line="16" selection-end-column="61" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

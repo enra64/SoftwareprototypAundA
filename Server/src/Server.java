@@ -14,9 +14,9 @@ public class Server {
 
 
 		
-		DatagramSocket serverSocket = new DatagramSocket();
+		DatagramSocket serverSocket = new DatagramSocket(null);
 		serverSocket.setReuseAddress(true);
-		serverSocket.bind(new InetSocketAddress(12345));
+		serverSocket.bind(new InetSocketAddress(9876));
 
 		try {
 
