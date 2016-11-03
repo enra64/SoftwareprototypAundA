@@ -11,9 +11,10 @@ import java.util.*;
 
 public class MouseControl implements TcpServer.ServerThread.OnUpdateListener {
     private float[] mGravity = new float[3];
+    private float[] sum = new float[3];
     private final float ALPHA = 0.8f;
     private Robot mRobot;
-    private Average mAccelerationAverage = new Average(100, 3);
+    private Average mAccelerationAverage = new Average(10, 3);
     private TcpServer.ServerThread mServer;
     private ArrayList<float[]> mHistory = new ArrayList<>();
 
@@ -79,48 +80,37 @@ public class MouseControl implements TcpServer.ServerThread.OnUpdateListener {
 
         mHistory.add(average.clone());
 
-        System.out.print("\r" + Arrays.toString(average));
+        if(mHistory.size() > 20)
+            for(int i = 0; i < sum.length; i++)
+                sum[i] += average[i];
 
         Point currentLocation = MouseInfo.getPointerInfo().getLocation();
 
 
-
         // left
-        if (average[0] < -1) {
-            mRobot.mouseMove(currentLocation.x + 1, currentLocation.y);
+        if (sum[0] < -0.005) {
+            mRobot.mouseMove(currentLocation.x + 1 - 1050, currentLocation.y);
         }
         // right
-        else if (average[0] > 1) {
-            mRobot.mouseMove(currentLocation.x - 1, currentLocation.y);
+        else if (sum[0] > 0.005) {
+            mRobot.mouseMove(currentLocation.x - 1 - 1050, currentLocation.y);
         }
     }
 
     private class Average {
         float[][] mStorage;
-        float[] mZeroPoint;
-        boolean mIsZeroPointSaved = false;
         int mIndex = 0;
 
         Average(int averageCount, int fieldLength) {
             mStorage = new float[averageCount][fieldLength];
-            mZeroPoint = new float[fieldLength];
-
-            for(int i = 0; i < mZeroPoint.length; i++)
-                mZeroPoint[i] = 0;
         }
 
         void add(float[] val) {
             // check for correct values
             assert (val.length == mStorage[0].length);
 
-            if (mIndex + 1 >= mStorage.length){
+            if (mIndex + 1 >= mStorage.length)
                 mIndex = 0;
-                if(!mIsZeroPointSaved){
-                    mZeroPoint = getAverage();
-                    mIsZeroPointSaved = true;
-                    System.out.println("created zero point as " + Arrays.toString(mZeroPoint));
-                }
-            }
 
             mStorage[mIndex++] = val;
         }
@@ -137,13 +127,7 @@ public class MouseControl implements TcpServer.ServerThread.OnUpdateListener {
             for(int i = 0; i < sum.length; i++)
                 sum[i] = sum[i] / mStorage.length;
 
-            float[] result = sum.clone();
-
-            for(int i = 0; i < result.length; i++){
-                //result[i] -= mZeroPoint[i];
-            }
-
-            return result;
+            return sum;
         }
     }
 }

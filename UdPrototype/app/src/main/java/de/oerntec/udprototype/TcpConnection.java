@@ -1,5 +1,7 @@
 package de.oerntec.udprototype;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -100,6 +102,8 @@ class TcpConnection implements DataSink {
                     if (!mDataQueue.isEmpty())
                         // write unshared to ensure new objects are written to the stream
                         objectOutputStream.writeUnshared(mDataQueue.poll());
+                    if(mDataQueue.size() > 50)
+                        Log.w("TcpConnection", "long queue!: " + mDataQueue.size());
                 }
             } catch (IOException e) {
                 e.printStackTrace();
