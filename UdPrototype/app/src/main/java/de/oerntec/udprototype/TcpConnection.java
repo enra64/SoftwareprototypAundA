@@ -106,8 +106,6 @@ class TcpConnection implements DataSink {
                         // write unshared to ensure new objects are written to the stream
                         objectOutputStream.writeUnshared(data);
                     }
-                    if(mDataQueue.size() > 50)
-                        Log.w("TcpConnection", "long queue!: " + mDataQueue.size());
                 }
             } catch (IOException e) {
                 e.printStackTrace();
