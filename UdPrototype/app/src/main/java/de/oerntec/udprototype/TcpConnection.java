@@ -30,6 +30,11 @@ class TcpConnection implements DataSink {
     private boolean mInitializationSent = false;
 
     /**
+     * The temporal distance between the sensor timestamps and the system time
+     */
+    private long mTimestampDiff;
+
+    /**
      * Initialize the connection using specified port and host
      */
     TcpConnection(String host, int port) throws IOException{
@@ -52,6 +57,7 @@ class TcpConnection implements DataSink {
     public void onData(SensorData sensorData) {
         if(!mInitializationSent){
             System.out.println("system:" + new Date().getTime() * 1000000 + ", sensor: " + sensorData.timestamp);
+            mTimestampDiff = new Date().getTime() * 1000000 - sensorData.timestamp;
             mInitializationSent = true;
         }
         mSocketThread.send(sensorData);
@@ -101,10 +107,13 @@ class TcpConnection implements DataSink {
                 while(true) {
                     if (!mDataQueue.isEmpty()){
                         SensorData data = mDataQueue.poll();
-                        data.timestamp = (new Date()).getTime()
-                                + (data.timestamp - System.nanoTime()) / 1000000L;
-                        // write unshared to ensure new objects are written to the stream
-                        objectOutputStream.writeUnshared(data);
+                        if(data != null) {
+                            // convert timestamp to system time
+                            //data.timestamp += mTimestampDiff;
+
+                            // write unshared to ensure new objects are written to the stream
+                            objectOutputStream.writeUnshared(data);
+                        }
                     }
                 }
             } catch (IOException e) {

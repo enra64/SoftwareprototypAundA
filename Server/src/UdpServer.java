@@ -10,7 +10,7 @@ public class UdpServer {
     public static void main(String args[]) throws Exception {
         DatagramSocket serverSocket = new DatagramSocket(null);
         serverSocket.setReuseAddress(true);
-        serverSocket.bind(new InetSocketAddress(12345));
+        serverSocket.bind(new InetSocketAddress(25456));
 
         try {
             // create result csv, write header
@@ -20,7 +20,7 @@ public class UdpServer {
             // storage for udp data
             byte[] appData = new byte[1024];
 
-            System.out.println("running");
+            System.out.println("running UDP server");
 
             while (true) {
                 // receive udp packet
