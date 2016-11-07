@@ -2,7 +2,6 @@
   <library name="SoftwareprototypAundA">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../common/out/artifacts/SoftwareprototypAundA_jar/SoftwareprototypAundA.jar!/" />
-      <root url="jar://$USER_HOME$/Downloads/SoftwareprototypAundA.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
