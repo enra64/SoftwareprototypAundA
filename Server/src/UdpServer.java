@@ -1,8 +1,9 @@
+import sp_common.SensorData;
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
 
-import sp_common.*;
 
 public class UdpServer {
     private static Logger mLogger;
