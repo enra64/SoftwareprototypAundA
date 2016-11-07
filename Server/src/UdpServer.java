@@ -12,6 +12,7 @@ public class UdpServer {
         DatagramSocket serverSocket = new DatagramSocket(null);
         serverSocket.setReuseAddress(true);
         serverSocket.bind(new InetSocketAddress(25456));
+        boolean connected = false;
 
         try {
             // create result csv, write header
@@ -26,7 +27,15 @@ public class UdpServer {
             while (true) {
                 // receive udp packet
                 DatagramPacket appPacket = new DatagramPacket(appData, appData.length);
+
                 serverSocket.receive(appPacket);
+
+                if(connected==false){
+                    System.out.println("Connected");
+                }
+
+                connected = true;
+
 
                 // parse incoming SensorData object
                 ByteArrayInputStream input = new ByteArrayInputStream(appData);
