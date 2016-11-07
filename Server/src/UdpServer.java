@@ -33,7 +33,7 @@ public class UdpServer {
                 SensorData sensorData = (SensorData) oinput.readObject();
 
                 // append new timestamp
-                mLogger.write(String.valueOf(sensorData.timestamp) + "," + new Date().getTime());
+                mLogger.write(String.valueOf(sensorData.timestamp) + "," + new Date().getTime()*1000000);
             }
 
         } finally {
