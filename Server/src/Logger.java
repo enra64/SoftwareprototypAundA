@@ -1,52 +1,44 @@
 /**
- * Created by André on 03.11.2016.
+ * Created by AndrÃ© on 03.11.2016.
  */
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 /**
- * Logger that creates a log.txt file that contains all the information sent by the server
- *
- * @author PC
+ * Logger that creates a file that contains all the information sent by the server
  */
-
-public class Logger {
-
+class Logger {
+    /**
+     * Singleton instance
+     */
     private static Logger log = null;
 
+    /**
+     * Writer used for saving to disk
+     */
     private PrintWriter writer;
-    private final String fileName = "log.txt";
 
-    public static Logger getLogger()
-    {
-
-        if(log == null)
-            log = new Logger();
+    static Logger getLogger(String filename) {
+        if (log == null)
+            log = new Logger(filename);
 
         return log;
     }
 
-
-    private Logger()
-    {
-        try
-        {
+    private Logger(String fileName) {
+        try {
             writer = new PrintWriter(fileName);
-        }
-        catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     /**
      * Writes data to the log file
-     * <\br>
      * @param textLine - String of data that is written to the file
      */
-    public void write(String textLine)
-    {
+    void write(String textLine) {
         writer.println(textLine);
         writer.flush();
     }
@@ -54,8 +46,7 @@ public class Logger {
     /**
      * closes the PrintWriter
      */
-    public void close()
-    {
+    void close() {
         writer.close();
     }
 }

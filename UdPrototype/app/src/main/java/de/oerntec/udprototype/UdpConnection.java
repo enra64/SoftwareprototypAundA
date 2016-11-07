@@ -9,6 +9,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.nio.channels.DatagramChannel;
+import java.util.Date;
 
 import sp_common.DataSink;
 import sp_common.SensorData;
@@ -33,6 +34,16 @@ class UdpConnection implements DataSink {
      * The target port on {@link #mHost} for our UDP packets
      */
     private final int mPort;
+
+    /**
+     * Variable denoting whether we already have written out our initial sensor/system timestamp pair
+     */
+    private boolean mInitializationSent = false;
+
+    /**
+     * The temporal distance between the sensor timestamps and the system time
+     */
+    private long mTimestampDiff;
 
     /**
      * Initialize the connection using specified port and host
@@ -60,6 +71,11 @@ class UdpConnection implements DataSink {
      */
     @Override
     public void onData(SensorData sensorData) {
+        if(!mInitializationSent){
+            System.out.println("system:" + new Date().getTime() * 1000000 + ", sensor: " + sensorData.timestamp);
+            mTimestampDiff = new Date().getTime() * 1000000 - sensorData.timestamp;
+            mInitializationSent = true;
+        }
         new SensorOut().execute(sensorData);
     }
 
@@ -72,6 +88,7 @@ class UdpConnection implements DataSink {
         @Override
         protected Boolean doInBackground(SensorData... sensorData) {
             try {
+                sensorData[0].timestamp += mTimestampDiff;
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 ObjectOutputStream os = new ObjectOutputStream(outputStream);
                 os.writeObject(sensorData[0]);
