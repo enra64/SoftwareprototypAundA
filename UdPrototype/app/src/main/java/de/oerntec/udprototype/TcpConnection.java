@@ -57,7 +57,6 @@ class TcpConnection implements DataSink {
     public void onData(SensorData sensorData) {
         if(!mInitializationSent){
             System.out.println("system:" + new Date().getTime() * 1000000 + ", sensor: " + sensorData.timestamp);
-            mTimestampDiff = new Date().getTime() * 1000000 - sensorData.timestamp;
             mInitializationSent = true;
         }
         mSocketThread.send(sensorData);
@@ -108,9 +107,6 @@ class TcpConnection implements DataSink {
                     if (!mDataQueue.isEmpty()){
                         SensorData data = mDataQueue.poll();
                         if(data != null) {
-                            // convert timestamp to system time
-                            //data.timestamp += mTimestampDiff;
-
                             // write unshared to ensure new objects are written to the stream
                             objectOutputStream.writeUnshared(data);
                         }

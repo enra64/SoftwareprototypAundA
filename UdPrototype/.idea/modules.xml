@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/UdPrototype.iml" filepath="$PROJECT_DIR$/UdPrototype.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file:///run/media/arne/data/Studium/Semester 5/semester-5-golden-repo/softwareprojekt/SoftwareprototypAundA/UdPrototype/UdPrototype.iml" filepath="/run/media/arne/data/Studium/Semester 5/semester-5-golden-repo/softwareprojekt/SoftwareprototypAundA/UdPrototype/UdPrototype.iml" />
+      <module fileurl="file:///run/media/arne/data/Studium/Semester 5/semester-5-golden-repo/softwareprojekt/SoftwareprototypAundA/UdPrototype/app/app.iml" filepath="/run/media/arne/data/Studium/Semester 5/semester-5-golden-repo/softwareprojekt/SoftwareprototypAundA/UdPrototype/app/app.iml" />
     </modules>
   </component>
 </project>
