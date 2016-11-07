@@ -36,6 +36,16 @@ class UdpConnection implements DataSink {
     private final int mPort;
 
     /**
+     * Variable denoting whether we already have written out our initial sensor/system timestamp pair
+     */
+    private boolean mInitializationSent = false;
+
+    /**
+     * The temporal distance between the sensor timestamps and the system time
+     */
+    private long mTimestampDiff;
+
+    /**
      * Initialize the connection using specified port and host
      */
     UdpConnection(String host, int port) throws IOException {
@@ -61,6 +71,11 @@ class UdpConnection implements DataSink {
      */
     @Override
     public void onData(SensorData sensorData) {
+        if(!mInitializationSent){
+            System.out.println("system:" + new Date().getTime() * 1000000 + ", sensor: " + sensorData.timestamp);
+            mTimestampDiff = new Date().getTime() * 1000000 - sensorData.timestamp;
+            mInitializationSent = true;
+        }
         new SensorOut().execute(sensorData);
     }
 
@@ -73,8 +88,7 @@ class UdpConnection implements DataSink {
         @Override
         protected Boolean doInBackground(SensorData... sensorData) {
             try {
-                sensorData[0].timestamp = (new Date()).getTime()
-                        + (sensorData[0].timestamp - System.nanoTime()) / 1000000L;
+                sensorData[0].timestamp += mTimestampDiff;
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 ObjectOutputStream os = new ObjectOutputStream(outputStream);
                 os.writeObject(sensorData[0]);

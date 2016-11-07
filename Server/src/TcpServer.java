@@ -57,7 +57,7 @@ public class TcpServer {
         // both must have the same size, as their indices must directly correspond
         assert(sensorDataHistory.size() == timestampHistory.size());
 
-        try (FileWriter fw = new FileWriter("statistics.csv", true);
+        try (FileWriter fw = new FileWriter("tcp_statistics.csv", false);
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)) {
             // iterate over all history

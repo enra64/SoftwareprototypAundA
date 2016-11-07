@@ -1,1 +1,0 @@
-cp "/home/arne/Documents/Studium/Semester 5/repo/softwareprojekt/SoftwareprototypAundA/common/out/artifacts/SoftwareprototypAundA_jar/SoftwareprototypAundA.jar" "/home/arne/Documents/Studium/Semester 5/repo/softwareprojekt/SoftwareprototypAundA/UdPrototype/app/libs/"
